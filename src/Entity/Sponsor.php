@@ -24,7 +24,7 @@ class Sponsor
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $url = null;
 
-    #[ORM\ManyToMany(targetEntity: Edition::class, mappedBy: 'sponsor_id')]
+    #[ORM\ManyToMany(targetEntity: Edition::class, mappedBy: 'sponsor')]
     private Collection $editions;
 
     public function __construct()

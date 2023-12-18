@@ -17,17 +17,17 @@ class Etudiant
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $user_id = null;
+    private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'etudiants')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Section $section_id = null;
+    private ?Section $section = null;
 
     #[ORM\ManyToOne(inversedBy: 'etudiants')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Ecole $ecole_id = null;
+    private ?Ecole $ecole = null;
 
-    #[ORM\ManyToMany(targetEntity: Inscription::class, mappedBy: 'edtudiant_id')]
+    #[ORM\ManyToMany(targetEntity: Inscription::class, mappedBy: 'edtudiant')]
     private Collection $inscriptions;
 
     public function __construct()
@@ -42,36 +42,36 @@ class Etudiant
 
     public function getUserId(): ?User
     {
-        return $this->user_id;
+        return $this->user;
     }
 
-    public function setUserId(User $user_id): static
+    public function setUserId(User $user): static
     {
-        $this->user_id = $user_id;
+        $this->user = $user;
 
         return $this;
     }
 
     public function getSectionId(): ?Section
     {
-        return $this->section_id;
+        return $this->section;
     }
 
-    public function setSectionId(?Section $section_id): static
+    public function setSectionId(?Section $section): static
     {
-        $this->section_id = $section_id;
+        $this->section = $section;
 
         return $this;
     }
 
     public function getEcoleId(): ?Ecole
     {
-        return $this->ecole_id;
+        return $this->ecole;
     }
 
-    public function setEcoleId(?Ecole $ecole_id): static
+    public function setEcoleId(?Ecole $ecole): static
     {
-        $this->ecole_id = $ecole_id;
+        $this->ecole = $ecole;
 
         return $this;
     }

@@ -20,9 +20,9 @@ class Edition
     private ?\DateTimeInterface $annee = null;
 
     #[ORM\ManyToMany(targetEntity: Sponsor::class, inversedBy: 'editions')]
-    private Collection $sponsor_id;
+    private Collection $sponsor;
 
-    #[ORM\OneToMany(mappedBy: 'edition_id', targetEntity: Atelier::class)]
+    #[ORM\OneToMany(mappedBy: 'edition', targetEntity: Atelier::class)]
     private Collection $ateliers;
 
     #[ORM\Column(length: 2048, nullable: true)]
@@ -30,7 +30,7 @@ class Edition
 
     public function __construct()
     {
-        $this->sponsor_id = new ArrayCollection();
+        $this->sponsor = new ArrayCollection();
         $this->ateliers = new ArrayCollection();
     }
 
@@ -56,13 +56,13 @@ class Edition
      */
     public function getSponsorId(): Collection
     {
-        return $this->sponsor_id;
+        return $this->sponsor;
     }
 
     public function addSponsorId(Sponsor $sponsorId): static
     {
-        if (!$this->sponsor_id->contains($sponsorId)) {
-            $this->sponsor_id->add($sponsorId);
+        if (!$this->sponsor->contains($sponsorId)) {
+            $this->sponsor->add($sponsorId);
         }
 
         return $this;
@@ -70,7 +70,7 @@ class Edition
 
     public function removeSponsorId(Sponsor $sponsorId): static
     {
-        $this->sponsor_id->removeElement($sponsorId);
+        $this->sponsor->removeElement($sponsorId);
 
         return $this;
     }

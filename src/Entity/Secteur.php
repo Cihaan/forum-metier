@@ -22,7 +22,7 @@ class Secteur
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\OneToMany(mappedBy: 'secteur_id', targetEntity: Atelier::class)]
+    #[ORM\OneToMany(mappedBy: 'secteur', targetEntity: Atelier::class)]
     private Collection $ateliers;
 
     public function __construct()

@@ -28,7 +28,7 @@ class User
 
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Role $role_id = null;
+    private ?Role $role = null;
 
     public function getId(): ?int
     {
@@ -83,14 +83,14 @@ class User
         return $this;
     }
 
-    public function getRoleId(): ?Role
+    public function getRole(): ?Role
     {
-        return $this->role_id;
+        return $this->role;
     }
 
-    public function setRoleId(?Role $role_id): static
+    public function setRoleId(?Role $role): static
     {
-        $this->role_id = $role_id;
+        $this->role = $role;
 
         return $this;
     }

@@ -18,7 +18,7 @@ class Competence
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    #[ORM\ManyToMany(targetEntity: Metier::class, mappedBy: 'competence_id')]
+    #[ORM\ManyToMany(targetEntity: Metier::class, mappedBy: 'competence')]
     private Collection $metiers;
 
     public function __construct()

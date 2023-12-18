@@ -19,7 +19,7 @@ class Ressource
     #[ORM\Column(length: 2048, nullable: true)]
     private ?string $lien = null;
 
-    #[ORM\ManyToOne(inversedBy: 'ressource_id')]
+    #[ORM\ManyToOne(inversedBy: 'ressource')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Atelier $atelier = null;
 

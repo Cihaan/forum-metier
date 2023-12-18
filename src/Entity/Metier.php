@@ -19,18 +19,18 @@ class Metier
     private ?string $nom = null;
 
     #[ORM\ManyToMany(targetEntity: Competence::class, inversedBy: 'metiers')]
-    private Collection $competence_id;
+    private Collection $competence;
 
     #[ORM\ManyToMany(targetEntity: Activite::class, inversedBy: 'metiers')]
-    private Collection $activite_id;
+    private Collection $activite;
 
-    #[ORM\ManyToMany(targetEntity: Atelier::class, mappedBy: 'metier_id')]
+    #[ORM\ManyToMany(targetEntity: Atelier::class, mappedBy: 'metier')]
     private Collection $ateliers;
 
     public function __construct()
     {
-        $this->competence_id = new ArrayCollection();
-        $this->activite_id = new ArrayCollection();
+        $this->competence = new ArrayCollection();
+        $this->activite = new ArrayCollection();
         $this->ateliers = new ArrayCollection();
     }
 
@@ -56,13 +56,13 @@ class Metier
      */
     public function getCompetenceId(): Collection
     {
-        return $this->competence_id;
+        return $this->competence;
     }
 
     public function addCompetenceId(Competence $competenceId): static
     {
-        if (!$this->competence_id->contains($competenceId)) {
-            $this->competence_id->add($competenceId);
+        if (!$this->competence->contains($competenceId)) {
+            $this->competence->add($competenceId);
         }
 
         return $this;
@@ -70,7 +70,7 @@ class Metier
 
     public function removeCompetenceId(Competence $competenceId): static
     {
-        $this->competence_id->removeElement($competenceId);
+        $this->competence->removeElement($competenceId);
 
         return $this;
     }
@@ -78,23 +78,23 @@ class Metier
     /**
      * @return Collection<int, Activite>
      */
-    public function getAcriviteId(): Collection
+    public function getActiviteId(): Collection
     {
-        return $this->activite_id;
+        return $this->activite;
     }
 
-    public function addAcriviteId(Activite $acriviteId): static
+    public function addActiviteId(Activite $activiteId): static
     {
-        if (!$this->activite_id->contains($acriviteId)) {
-            $this->activite_id->add($acriviteId);
+        if (!$this->activite->contains($activiteId)) {
+            $this->activite->add($activiteId);
         }
 
         return $this;
     }
 
-    public function removeAcriviteId(Activite $acriviteId): static
+    public function removeActiviteId(Activite $activiteId): static
     {
-        $this->activite_id->removeElement($acriviteId);
+        $this->activite->removeElement($activiteId);
 
         return $this;
     }

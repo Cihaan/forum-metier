@@ -18,10 +18,10 @@ class Ecole
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    #[ORM\OneToMany(mappedBy: 'ecole_id', targetEntity: Salle::class)]
+    #[ORM\OneToMany(mappedBy: 'ecole', targetEntity: Salle::class)]
     private Collection $salles;
 
-    #[ORM\OneToMany(mappedBy: 'ecole_id', targetEntity: Etudiant::class)]
+    #[ORM\OneToMany(mappedBy: 'ecole', targetEntity: Etudiant::class)]
     private Collection $etudiants;
 
     public function __construct()

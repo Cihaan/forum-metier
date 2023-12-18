@@ -24,9 +24,9 @@ class Salle
 
     #[ORM\ManyToOne(inversedBy: 'salles')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Ecole $ecole_id = null;
+    private ?Ecole $ecole = null;
 
-    #[ORM\OneToOne(mappedBy: 'salle_id', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'salle', cascade: ['persist', 'remove'])]
     private ?Atelier $atelier = null;
 
     public function getId(): ?int
@@ -72,12 +72,12 @@ class Salle
 
     public function getEcoleId(): ?Ecole
     {
-        return $this->ecole_id;
+        return $this->ecole;
     }
 
-    public function setEcoleId(?Ecole $ecole_id): static
+    public function setEcoleId(?Ecole $ecole): static
     {
-        $this->ecole_id = $ecole_id;
+        $this->ecole = $ecole;
 
         return $this;
     }

@@ -17,7 +17,7 @@ class Inscription
     private ?int $id = null;
 
     #[ORM\ManyToMany(targetEntity: Etudiant::class, inversedBy: 'inscriptions')]
-    private Collection $edtudiant_id;
+    private Collection $edtudiant;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
@@ -27,7 +27,7 @@ class Inscription
 
     public function __construct()
     {
-        $this->edtudiant_id = new ArrayCollection();
+        $this->edtudiant = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -40,13 +40,13 @@ class Inscription
      */
     public function getEdtudiantId(): Collection
     {
-        return $this->edtudiant_id;
+        return $this->edtudiant;
     }
 
     public function addEdtudiantId(Etudiant $edtudiantId): static
     {
-        if (!$this->edtudiant_id->contains($edtudiantId)) {
-            $this->edtudiant_id->add($edtudiantId);
+        if (!$this->edtudiant->contains($edtudiantId)) {
+            $this->edtudiant->add($edtudiantId);
         }
 
         return $this;
@@ -54,7 +54,7 @@ class Inscription
 
     public function removeEdtudiantId(Etudiant $edtudiantId): static
     {
-        $this->edtudiant_id->removeElement($edtudiantId);
+        $this->edtudiant->removeElement($edtudiantId);
 
         return $this;
     }

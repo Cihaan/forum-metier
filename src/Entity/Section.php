@@ -18,7 +18,7 @@ class Section
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    #[ORM\OneToMany(mappedBy: 'section_id', targetEntity: Etudiant::class)]
+    #[ORM\OneToMany(mappedBy: 'section', targetEntity: Etudiant::class)]
     private Collection $etudiants;
 
     public function __construct()

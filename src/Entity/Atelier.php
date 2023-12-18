@@ -21,25 +21,25 @@ class Atelier
 
     #[ORM\ManyToOne(inversedBy: 'ateliers')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Secteur $secteur_id = null;
+    private ?Secteur $secteur = null;
 
     #[ORM\OneToMany(mappedBy: 'atelier', targetEntity: Ressource::class)]
-    private Collection $ressource_id;
+    private Collection $ressource;
 
     #[ORM\OneToOne(inversedBy: 'atelier', cascade: ['persist', 'remove'])]
-    private ?Salle $salle_id = null;
+    private ?Salle $salle = null;
 
     #[ORM\ManyToMany(targetEntity: Metier::class, inversedBy: 'ateliers')]
-    private Collection $metier_id;
+    private Collection $metier;
 
     #[ORM\ManyToOne(inversedBy: 'ateliers')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Edition $edition_id = null;
+    private ?Edition $edition = null;
 
     public function __construct()
     {
-        $this->ressource_id = new ArrayCollection();
-        $this->metier_id = new ArrayCollection();
+        $this->ressource = new ArrayCollection();
+        $this->metier = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -61,12 +61,12 @@ class Atelier
 
     public function getSecteurId(): ?Secteur
     {
-        return $this->secteur_id;
+        return $this->secteur;
     }
 
-    public function setSecteurId(?Secteur $secteur_id): static
+    public function setSecteurId(?Secteur $secteur): static
     {
-        $this->secteur_id = $secteur_id;
+        $this->secteur = $secteur;
 
         return $this;
     }
@@ -76,13 +76,13 @@ class Atelier
      */
     public function getRessourceId(): Collection
     {
-        return $this->ressource_id;
+        return $this->ressource;
     }
 
     public function addRessourceId(Ressource $ressourceId): static
     {
-        if (!$this->ressource_id->contains($ressourceId)) {
-            $this->ressource_id->add($ressourceId);
+        if (!$this->ressource->contains($ressourceId)) {
+            $this->ressource->add($ressourceId);
             $ressourceId->setAtelier($this);
         }
 
@@ -91,7 +91,7 @@ class Atelier
 
     public function removeRessourceId(Ressource $ressourceId): static
     {
-        if ($this->ressource_id->removeElement($ressourceId)) {
+        if ($this->ressource->removeElement($ressourceId)) {
             // set the owning side to null (unless already changed)
             if ($ressourceId->getAtelier() === $this) {
                 $ressourceId->setAtelier(null);
@@ -103,12 +103,12 @@ class Atelier
 
     public function getSalleId(): ?Salle
     {
-        return $this->salle_id;
+        return $this->salle;
     }
 
-    public function setSalleId(?Salle $salle_id): static
+    public function setSalleId(?Salle $salle): static
     {
-        $this->salle_id = $salle_id;
+        $this->salle = $salle;
 
         return $this;
     }
@@ -118,13 +118,13 @@ class Atelier
      */
     public function getMetierId(): Collection
     {
-        return $this->metier_id;
+        return $this->metier;
     }
 
     public function addMetierId(Metier $metierId): static
     {
-        if (!$this->metier_id->contains($metierId)) {
-            $this->metier_id->add($metierId);
+        if (!$this->metier->contains($metierId)) {
+            $this->metier->add($metierId);
         }
 
         return $this;
@@ -132,19 +132,19 @@ class Atelier
 
     public function removeMetierId(Metier $metierId): static
     {
-        $this->metier_id->removeElement($metierId);
+        $this->metier->removeElement($metierId);
 
         return $this;
     }
 
     public function getEditionId(): ?Edition
     {
-        return $this->edition_id;
+        return $this->edition;
     }
 
-    public function setEditionId(?Edition $edition_id): static
+    public function setEditionId(?Edition $edition): static
     {
-        $this->edition_id = $edition_id;
+        $this->edition = $edition;
 
         return $this;
     }
