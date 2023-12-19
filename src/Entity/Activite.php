@@ -55,7 +55,7 @@ class Activite
     {
         if (!$this->metiers->contains($metier)) {
             $this->metiers->add($metier);
-            $metier->addActiviteId($this);
+            $metier->addActivite($this);
         }
 
         return $this;
@@ -64,7 +64,7 @@ class Activite
     public function removeMetier(Metier $metier): static
     {
         if ($this->metiers->removeElement($metier)) {
-            $metier->removeActiviteId($this);
+            $metier->removeActivite($this);
         }
 
         return $this;

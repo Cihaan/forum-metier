@@ -22,11 +22,11 @@ class Edition
     #[ORM\ManyToMany(targetEntity: Sponsor::class, inversedBy: 'editions')]
     private Collection $sponsor;
 
+    #[ORM\OneToOne(mappedBy: 'edition', cascade: ['persist', 'remove'])]
+    private ?Questionnaire $questionnaire = null;
+
     #[ORM\OneToMany(mappedBy: 'edition', targetEntity: Atelier::class)]
     private Collection $ateliers;
-
-    #[ORM\Column(length: 2048, nullable: true)]
-    private ?string $questionaire_url = null;
 
     public function __construct()
     {
@@ -54,23 +54,40 @@ class Edition
     /**
      * @return Collection<int, Sponsor>
      */
-    public function getSponsorId(): Collection
+    public function getSponsor(): Collection
     {
         return $this->sponsor;
     }
 
-    public function addSponsorId(Sponsor $sponsorId): static
+    public function addSponsor(Sponsor $sponsor): static
     {
-        if (!$this->sponsor->contains($sponsorId)) {
-            $this->sponsor->add($sponsorId);
+        if (!$this->sponsor->contains($sponsor)) {
+            $this->sponsor->add($sponsor);
         }
 
         return $this;
     }
 
-    public function removeSponsorId(Sponsor $sponsorId): static
+    public function removeSponsor(Sponsor $sponsor): static
     {
-        $this->sponsor->removeElement($sponsorId);
+        $this->sponsor->removeElement($sponsor);
+
+        return $this;
+    }
+
+    public function getQuestionnaire(): ?Questionnaire
+    {
+        return $this->questionnaire;
+    }
+
+    public function setQuestionnaire(Questionnaire $questionnaire): static
+    {
+        // set the owning side of the relation if necessary
+        if ($questionnaire->getEdition() !== $this) {
+            $questionnaire->setEdition($this);
+        }
+
+        $this->questionnaire = $questionnaire;
 
         return $this;
     }
@@ -87,7 +104,7 @@ class Edition
     {
         if (!$this->ateliers->contains($atelier)) {
             $this->ateliers->add($atelier);
-            $atelier->setEditionId($this);
+            $atelier->setEdition($this);
         }
 
         return $this;
@@ -97,22 +114,10 @@ class Edition
     {
         if ($this->ateliers->removeElement($atelier)) {
             // set the owning side to null (unless already changed)
-            if ($atelier->getEditionId() === $this) {
-                $atelier->setEditionId(null);
+            if ($atelier->getEdition() === $this) {
+                $atelier->setEdition(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getQuestionaireUrl(): ?string
-    {
-        return $this->questionaire_url;
-    }
-
-    public function setQuestionaireUrl(?string $questionaire_url): static
-    {
-        $this->questionaire_url = $questionaire_url;
 
         return $this;
     }

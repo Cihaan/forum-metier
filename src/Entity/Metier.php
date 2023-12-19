@@ -54,23 +54,23 @@ class Metier
     /**
      * @return Collection<int, Competence>
      */
-    public function getCompetenceId(): Collection
+    public function getCompetence(): Collection
     {
         return $this->competence;
     }
 
-    public function addCompetenceId(Competence $competenceId): static
+    public function addCompetence(Competence $competence): static
     {
-        if (!$this->competence->contains($competenceId)) {
-            $this->competence->add($competenceId);
+        if (!$this->competence->contains($competence)) {
+            $this->competence->add($competence);
         }
 
         return $this;
     }
 
-    public function removeCompetenceId(Competence $competenceId): static
+    public function removeCompetence(Competence $competence): static
     {
-        $this->competence->removeElement($competenceId);
+        $this->competence->removeElement($competence);
 
         return $this;
     }
@@ -78,23 +78,23 @@ class Metier
     /**
      * @return Collection<int, Activite>
      */
-    public function getActiviteId(): Collection
+    public function getActivite(): Collection
     {
         return $this->activite;
     }
 
-    public function addActiviteId(Activite $activiteId): static
+    public function addActivite(Activite $activite): static
     {
-        if (!$this->activite->contains($activiteId)) {
-            $this->activite->add($activiteId);
+        if (!$this->activite->contains($activite)) {
+            $this->activite->add($activite);
         }
 
         return $this;
     }
 
-    public function removeActiviteId(Activite $activiteId): static
+    public function removeActivite(Activite $activite): static
     {
-        $this->activite->removeElement($activiteId);
+        $this->activite->removeElement($activite);
 
         return $this;
     }
@@ -111,7 +111,7 @@ class Metier
     {
         if (!$this->ateliers->contains($atelier)) {
             $this->ateliers->add($atelier);
-            $atelier->addMetierId($this);
+            $atelier->addMetier($this);
         }
 
         return $this;
@@ -120,7 +120,7 @@ class Metier
     public function removeAtelier(Atelier $atelier): static
     {
         if ($this->ateliers->removeElement($atelier)) {
-            $atelier->removeMetierId($this);
+            $atelier->removeMetier($this);
         }
 
         return $this;

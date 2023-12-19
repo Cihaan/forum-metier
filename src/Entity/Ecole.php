@@ -21,13 +21,9 @@ class Ecole
     #[ORM\OneToMany(mappedBy: 'ecole', targetEntity: Salle::class)]
     private Collection $salles;
 
-    #[ORM\OneToMany(mappedBy: 'ecole', targetEntity: Etudiant::class)]
-    private Collection $etudiants;
-
     public function __construct()
     {
         $this->salles = new ArrayCollection();
-        $this->etudiants = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -59,7 +55,7 @@ class Ecole
     {
         if (!$this->salles->contains($salle)) {
             $this->salles->add($salle);
-            $salle->setEcoleId($this);
+            $salle->setEcole($this);
         }
 
         return $this;
@@ -69,38 +65,8 @@ class Ecole
     {
         if ($this->salles->removeElement($salle)) {
             // set the owning side to null (unless already changed)
-            if ($salle->getEcoleId() === $this) {
-                $salle->setEcoleId(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Etudiant>
-     */
-    public function getEtudiants(): Collection
-    {
-        return $this->etudiants;
-    }
-
-    public function addEtudiant(Etudiant $etudiant): static
-    {
-        if (!$this->etudiants->contains($etudiant)) {
-            $this->etudiants->add($etudiant);
-            $etudiant->setEcoleId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEtudiant(Etudiant $etudiant): static
-    {
-        if ($this->etudiants->removeElement($etudiant)) {
-            // set the owning side to null (unless already changed)
-            if ($etudiant->getEcoleId() === $this) {
-                $etudiant->setEcoleId(null);
+            if ($salle->getEcole() === $this) {
+                $salle->setEcole(null);
             }
         }
 

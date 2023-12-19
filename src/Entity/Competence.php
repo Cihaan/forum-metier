@@ -55,7 +55,7 @@ class Competence
     {
         if (!$this->metiers->contains($metier)) {
             $this->metiers->add($metier);
-            $metier->addCompetenceId($this);
+            $metier->addCompetence($this);
         }
 
         return $this;
@@ -64,7 +64,7 @@ class Competence
     public function removeMetier(Metier $metier): static
     {
         if ($this->metiers->removeElement($metier)) {
-            $metier->removeCompetenceId($this);
+            $metier->removeCompetence($this);
         }
 
         return $this;

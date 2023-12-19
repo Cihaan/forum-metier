@@ -2,12 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
+use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: '`user`')]
-class User
+#[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
+class Utilisateur
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -26,7 +25,7 @@ class User
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $prenom = null;
 
-    #[ORM\ManyToOne(inversedBy: 'users')]
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Role $role = null;
 
@@ -88,11 +87,10 @@ class User
         return $this->role;
     }
 
-    public function setRoleId(?Role $role): static
+    public function setRole(?Role $role): static
     {
         $this->role = $role;
 
         return $this;
     }
-
 }

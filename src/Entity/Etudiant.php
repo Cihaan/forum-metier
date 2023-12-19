@@ -15,23 +15,27 @@ class Etudiant
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+    private ?Utilisateur $utilisateur = null;
 
-    #[ORM\ManyToOne(inversedBy: 'etudiants')]
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Section $section = null;
 
-    #[ORM\ManyToOne(inversedBy: 'etudiants')]
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Ecole $ecole = null;
 
-    #[ORM\ManyToMany(targetEntity: Inscription::class, mappedBy: 'edtudiant')]
+    #[ORM\ManyToMany(targetEntity: Reponse::class, mappedBy: 'etudiant')]
+    private Collection $reponses;
+
+    #[ORM\OneToMany(mappedBy: 'etudiant', targetEntity: Inscription::class)]
     private Collection $inscriptions;
 
     public function __construct()
     {
+        $this->reponses = new ArrayCollection();
         $this->inscriptions = new ArrayCollection();
     }
 
@@ -40,38 +44,65 @@ class Etudiant
         return $this->id;
     }
 
-    public function getUserId(): ?User
+    public function getUtilisateur(): ?Utilisateur
     {
-        return $this->user;
+        return $this->utilisateur;
     }
 
-    public function setUserId(User $user): static
+    public function setUtilisateur(?Utilisateur $utilisateur): static
     {
-        $this->user = $user;
+        $this->utilisateur = $utilisateur;
 
         return $this;
     }
 
-    public function getSectionId(): ?Section
+    public function getSection(): ?Section
     {
         return $this->section;
     }
 
-    public function setSectionId(?Section $section): static
+    public function setSection(?Section $section): static
     {
         $this->section = $section;
 
         return $this;
     }
 
-    public function getEcoleId(): ?Ecole
+    public function getEcole(): ?Ecole
     {
         return $this->ecole;
     }
 
-    public function setEcoleId(?Ecole $ecole): static
+    public function setEcole(?Ecole $ecole): static
     {
         $this->ecole = $ecole;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reponse>
+     */
+    public function getReponses(): Collection
+    {
+        return $this->reponses;
+    }
+
+    public function addReponse(Reponse $reponse): static
+    {
+        if (!$this->reponses->contains($reponse)) {
+            $this->reponses->add($reponse);
+            $reponse->addEtudiant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReponse(Reponse $reponse): static
+    {
+        if ($this->reponses->removeElement($reponse)) {
+            $reponse->removeEtudiant($this);
+        }
 
         return $this;
     }
@@ -88,7 +119,7 @@ class Etudiant
     {
         if (!$this->inscriptions->contains($inscription)) {
             $this->inscriptions->add($inscription);
-            $inscription->addEdtudiantId($this);
+            $inscription->setEtudiant($this);
         }
 
         return $this;
@@ -97,7 +128,10 @@ class Etudiant
     public function removeInscription(Inscription $inscription): static
     {
         if ($this->inscriptions->removeElement($inscription)) {
-            $inscription->removeEdtudiantId($this);
+            // set the owning side to null (unless already changed)
+            if ($inscription->getEtudiant() === $this) {
+                $inscription->setEtudiant(null);
+            }
         }
 
         return $this;
