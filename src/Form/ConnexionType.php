@@ -9,27 +9,20 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UtilisateurType extends AbstractType
+class ConnexionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('email')
-            ->add('telephone')
-            ->add('nom')
-            ->add('prenom')
             ->add('password')
-            ->add('role', EntityType::class, [
-                'class' => Role::class,
-'choice_label' => 'id',
-            ])
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => Utilisateur::class,
-        ]);
-    }
+    // public function configureOptions(OptionsResolver $resolver): void
+    // {
+    //     $resolver->setDefaults([
+    //         'data_class' => Utilisateur::class,
+    //     ]);
+    // }
 }
