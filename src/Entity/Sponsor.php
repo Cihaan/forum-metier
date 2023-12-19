@@ -15,16 +15,16 @@ class Sponsor
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 2048, nullable: true)]
     private ?string $logo = null;
 
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $url = null;
+    #[ORM\Column(length: 2048, nullable: true)]
+    private ?string $url_site = null;
 
-    #[ORM\ManyToMany(targetEntity: Edition::class, mappedBy: 'sponsor_id')]
+    #[ORM\ManyToMany(targetEntity: Edition::class, mappedBy: 'sponsor')]
     private Collection $editions;
 
     public function __construct()
@@ -61,14 +61,14 @@ class Sponsor
         return $this;
     }
 
-    public function getUrl(): ?string
+    public function getUrlSite(): ?string
     {
-        return $this->url;
+        return $this->url_site;
     }
 
-    public function setUrl(?string $url): static
+    public function setUrlSite(?string $url_site): static
     {
-        $this->url = $url;
+        $this->url_site = $url_site;
 
         return $this;
     }
@@ -85,7 +85,7 @@ class Sponsor
     {
         if (!$this->editions->contains($edition)) {
             $this->editions->add($edition);
-            $edition->addSponsorId($this);
+            $edition->addSponsor($this);
         }
 
         return $this;
@@ -94,7 +94,7 @@ class Sponsor
     public function removeEdition(Edition $edition): static
     {
         if ($this->editions->removeElement($edition)) {
-            $edition->removeSponsorId($this);
+            $edition->removeSponsor($this);
         }
 
         return $this;

@@ -19,18 +19,18 @@ class Metier
     private ?string $nom = null;
 
     #[ORM\ManyToMany(targetEntity: Competence::class, inversedBy: 'metiers')]
-    private Collection $competence_id;
+    private Collection $competence;
 
     #[ORM\ManyToMany(targetEntity: Activite::class, inversedBy: 'metiers')]
-    private Collection $activite_id;
+    private Collection $activite;
 
-    #[ORM\ManyToMany(targetEntity: Atelier::class, mappedBy: 'metier_id')]
+    #[ORM\ManyToMany(targetEntity: Atelier::class, mappedBy: 'metier')]
     private Collection $ateliers;
 
     public function __construct()
     {
-        $this->competence_id = new ArrayCollection();
-        $this->activite_id = new ArrayCollection();
+        $this->competence = new ArrayCollection();
+        $this->activite = new ArrayCollection();
         $this->ateliers = new ArrayCollection();
     }
 
@@ -54,23 +54,23 @@ class Metier
     /**
      * @return Collection<int, Competence>
      */
-    public function getCompetenceId(): Collection
+    public function getCompetence(): Collection
     {
-        return $this->competence_id;
+        return $this->competence;
     }
 
-    public function addCompetenceId(Competence $competenceId): static
+    public function addCompetence(Competence $competence): static
     {
-        if (!$this->competence_id->contains($competenceId)) {
-            $this->competence_id->add($competenceId);
+        if (!$this->competence->contains($competence)) {
+            $this->competence->add($competence);
         }
 
         return $this;
     }
 
-    public function removeCompetenceId(Competence $competenceId): static
+    public function removeCompetence(Competence $competence): static
     {
-        $this->competence_id->removeElement($competenceId);
+        $this->competence->removeElement($competence);
 
         return $this;
     }
@@ -78,23 +78,23 @@ class Metier
     /**
      * @return Collection<int, Activite>
      */
-    public function getAcriviteId(): Collection
+    public function getActivite(): Collection
     {
-        return $this->activite_id;
+        return $this->activite;
     }
 
-    public function addAcriviteId(Activite $acriviteId): static
+    public function addActivite(Activite $activite): static
     {
-        if (!$this->activite_id->contains($acriviteId)) {
-            $this->activite_id->add($acriviteId);
+        if (!$this->activite->contains($activite)) {
+            $this->activite->add($activite);
         }
 
         return $this;
     }
 
-    public function removeAcriviteId(Activite $acriviteId): static
+    public function removeActivite(Activite $activite): static
     {
-        $this->activite_id->removeElement($acriviteId);
+        $this->activite->removeElement($activite);
 
         return $this;
     }
@@ -111,7 +111,7 @@ class Metier
     {
         if (!$this->ateliers->contains($atelier)) {
             $this->ateliers->add($atelier);
-            $atelier->addMetierId($this);
+            $atelier->addMetier($this);
         }
 
         return $this;
@@ -120,7 +120,7 @@ class Metier
     public function removeAtelier(Atelier $atelier): static
     {
         if ($this->ateliers->removeElement($atelier)) {
-            $atelier->removeMetierId($this);
+            $atelier->removeMetier($this);
         }
 
         return $this;

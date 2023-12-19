@@ -16,10 +16,10 @@ class Ressource
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    #[ORM\Column(length: 2048, nullable: true)]
+    #[ORM\Column(length: 2048)]
     private ?string $lien = null;
 
-    #[ORM\ManyToOne(inversedBy: 'ressource_id')]
+    #[ORM\ManyToOne(inversedBy: 'ressource')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Atelier $atelier = null;
 
@@ -45,7 +45,7 @@ class Ressource
         return $this->lien;
     }
 
-    public function setLien(?string $lien): static
+    public function setLien(string $lien): static
     {
         $this->lien = $lien;
 

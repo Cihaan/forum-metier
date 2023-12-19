@@ -18,7 +18,7 @@ class Activite
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    #[ORM\ManyToMany(targetEntity: Metier::class, mappedBy: 'activite_id')]
+    #[ORM\ManyToMany(targetEntity: Metier::class, mappedBy: 'activite')]
     private Collection $metiers;
 
     public function __construct()
@@ -55,7 +55,7 @@ class Activite
     {
         if (!$this->metiers->contains($metier)) {
             $this->metiers->add($metier);
-            $metier->addAcriviteId($this);
+            $metier->addActivite($this);
         }
 
         return $this;
@@ -64,7 +64,7 @@ class Activite
     public function removeMetier(Metier $metier): static
     {
         if ($this->metiers->removeElement($metier)) {
-            $metier->removeAcriviteId($this);
+            $metier->removeActivite($this);
         }
 
         return $this;

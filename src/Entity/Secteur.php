@@ -22,7 +22,7 @@ class Secteur
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\OneToMany(mappedBy: 'secteur_id', targetEntity: Atelier::class)]
+    #[ORM\OneToMany(mappedBy: 'secteur', targetEntity: Atelier::class)]
     private Collection $ateliers;
 
     public function __construct()
@@ -71,7 +71,7 @@ class Secteur
     {
         if (!$this->ateliers->contains($atelier)) {
             $this->ateliers->add($atelier);
-            $atelier->setSecteurId($this);
+            $atelier->setSecteur($this);
         }
 
         return $this;
@@ -81,8 +81,8 @@ class Secteur
     {
         if ($this->ateliers->removeElement($atelier)) {
             // set the owning side to null (unless already changed)
-            if ($atelier->getSecteurId() === $this) {
-                $atelier->setSecteurId(null);
+            if ($atelier->getSecteur() === $this) {
+                $atelier->setSecteur(null);
             }
         }
 

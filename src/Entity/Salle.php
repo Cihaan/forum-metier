@@ -13,7 +13,11 @@ class Salle
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\ManyToOne(inversedBy: 'salles')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Ecole $ecole = null;
+
+    #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
     #[ORM\Column]
@@ -22,11 +26,7 @@ class Salle
     #[ORM\Column]
     private ?int $capacite = null;
 
-    #[ORM\ManyToOne(inversedBy: 'salles')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Ecole $ecole_id = null;
-
-    #[ORM\OneToOne(mappedBy: 'salle_id', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'salle', cascade: ['persist', 'remove'])]
     private ?Atelier $atelier = null;
 
     public function getId(): ?int
@@ -34,12 +34,24 @@ class Salle
         return $this->id;
     }
 
+    public function getEcole(): ?Ecole
+    {
+        return $this->ecole;
+    }
+
+    public function setEcole(?Ecole $ecole): static
+    {
+        $this->ecole = $ecole;
+
+        return $this;
+    }
+
     public function getNom(): ?string
     {
         return $this->nom;
     }
 
-    public function setNom(?string $nom): static
+    public function setNom(string $nom): static
     {
         $this->nom = $nom;
 
@@ -70,18 +82,6 @@ class Salle
         return $this;
     }
 
-    public function getEcoleId(): ?Ecole
-    {
-        return $this->ecole_id;
-    }
-
-    public function setEcoleId(?Ecole $ecole_id): static
-    {
-        $this->ecole_id = $ecole_id;
-
-        return $this;
-    }
-
     public function getAtelier(): ?Atelier
     {
         return $this->atelier;
@@ -91,12 +91,12 @@ class Salle
     {
         // unset the owning side of the relation if necessary
         if ($atelier === null && $this->atelier !== null) {
-            $this->atelier->setSalleId(null);
+            $this->atelier->setSalle(null);
         }
 
         // set the owning side of the relation if necessary
-        if ($atelier !== null && $atelier->getSalleId() !== $this) {
-            $atelier->setSalleId($this);
+        if ($atelier !== null && $atelier->getSalle() !== $this) {
+            $atelier->setSalle($this);
         }
 
         $this->atelier = $atelier;

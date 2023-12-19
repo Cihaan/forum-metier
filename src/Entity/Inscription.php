@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\InscriptionRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -16,47 +14,23 @@ class Inscription
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToMany(targetEntity: Etudiant::class, inversedBy: 'inscriptions')]
-    private Collection $edtudiant_id;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column]
     private ?bool $statut_chiffrement = null;
 
-    public function __construct()
-    {
-        $this->edtudiant_id = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'inscriptions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Etudiant $etudiant = null;
+
+    #[ORM\ManyToOne(inversedBy: 'inscriptions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Atelier $atelier = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return Collection<int, Etudiant>
-     */
-    public function getEdtudiantId(): Collection
-    {
-        return $this->edtudiant_id;
-    }
-
-    public function addEdtudiantId(Etudiant $edtudiantId): static
-    {
-        if (!$this->edtudiant_id->contains($edtudiantId)) {
-            $this->edtudiant_id->add($edtudiantId);
-        }
-
-        return $this;
-    }
-
-    public function removeEdtudiantId(Etudiant $edtudiantId): static
-    {
-        $this->edtudiant_id->removeElement($edtudiantId);
-
-        return $this;
     }
 
     public function getDate(): ?\DateTimeInterface
@@ -79,6 +53,30 @@ class Inscription
     public function setStatutChiffrement(bool $statut_chiffrement): static
     {
         $this->statut_chiffrement = $statut_chiffrement;
+
+        return $this;
+    }
+
+    public function getEtudiant(): ?Etudiant
+    {
+        return $this->etudiant;
+    }
+
+    public function setEtudiant(?Etudiant $etudiant): static
+    {
+        $this->etudiant = $etudiant;
+
+        return $this;
+    }
+
+    public function getAtelier(): ?Atelier
+    {
+        return $this->atelier;
+    }
+
+    public function setAtelier(?Atelier $atelier): static
+    {
+        $this->atelier = $atelier;
 
         return $this;
     }

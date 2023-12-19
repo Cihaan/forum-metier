@@ -16,30 +16,34 @@ class Atelier
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $debut_datetime = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $debut = null;
 
     #[ORM\ManyToOne(inversedBy: 'ateliers')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Secteur $secteur_id = null;
+    private ?Secteur $secteur = null;
 
     #[ORM\OneToMany(mappedBy: 'atelier', targetEntity: Ressource::class)]
-    private Collection $ressource_id;
+    private Collection $ressource;
 
     #[ORM\OneToOne(inversedBy: 'atelier', cascade: ['persist', 'remove'])]
-    private ?Salle $salle_id = null;
+    private ?Salle $salle = null;
 
     #[ORM\ManyToMany(targetEntity: Metier::class, inversedBy: 'ateliers')]
-    private Collection $metier_id;
+    private Collection $metier;
 
     #[ORM\ManyToOne(inversedBy: 'ateliers')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Edition $edition_id = null;
+    private ?Edition $edition = null;
+
+    #[ORM\OneToMany(mappedBy: 'atelier', targetEntity: Inscription::class)]
+    private Collection $inscriptions;
 
     public function __construct()
     {
-        $this->ressource_id = new ArrayCollection();
-        $this->metier_id = new ArrayCollection();
+        $this->ressource = new ArrayCollection();
+        $this->metier = new ArrayCollection();
+        $this->inscriptions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -47,26 +51,26 @@ class Atelier
         return $this->id;
     }
 
-    public function getDebutDatetime(): ?\DateTimeInterface
+    public function getDebut(): ?\DateTimeInterface
     {
-        return $this->debut_datetime;
+        return $this->debut;
     }
 
-    public function setDebutDatetime(\DateTimeInterface $debut_datetime): static
+    public function setDebut(?\DateTimeInterface $debut): static
     {
-        $this->debut_datetime = $debut_datetime;
+        $this->debut = $debut;
 
         return $this;
     }
 
-    public function getSecteurId(): ?Secteur
+    public function getSecteur(): ?Secteur
     {
-        return $this->secteur_id;
+        return $this->secteur;
     }
 
-    public function setSecteurId(?Secteur $secteur_id): static
+    public function setSecteur(?Secteur $secteur): static
     {
-        $this->secteur_id = $secteur_id;
+        $this->secteur = $secteur;
 
         return $this;
     }
@@ -74,41 +78,41 @@ class Atelier
     /**
      * @return Collection<int, Ressource>
      */
-    public function getRessourceId(): Collection
+    public function getRessource(): Collection
     {
-        return $this->ressource_id;
+        return $this->ressource;
     }
 
-    public function addRessourceId(Ressource $ressourceId): static
+    public function addRessource(Ressource $ressource): static
     {
-        if (!$this->ressource_id->contains($ressourceId)) {
-            $this->ressource_id->add($ressourceId);
-            $ressourceId->setAtelier($this);
+        if (!$this->ressource->contains($ressource)) {
+            $this->ressource->add($ressource);
+            $ressource->setAtelier($this);
         }
 
         return $this;
     }
 
-    public function removeRessourceId(Ressource $ressourceId): static
+    public function removeRessource(Ressource $ressource): static
     {
-        if ($this->ressource_id->removeElement($ressourceId)) {
+        if ($this->ressource->removeElement($ressource)) {
             // set the owning side to null (unless already changed)
-            if ($ressourceId->getAtelier() === $this) {
-                $ressourceId->setAtelier(null);
+            if ($ressource->getAtelier() === $this) {
+                $ressource->setAtelier(null);
             }
         }
 
         return $this;
     }
 
-    public function getSalleId(): ?Salle
+    public function getSalle(): ?Salle
     {
-        return $this->salle_id;
+        return $this->salle;
     }
 
-    public function setSalleId(?Salle $salle_id): static
+    public function setSalle(?Salle $salle): static
     {
-        $this->salle_id = $salle_id;
+        $this->salle = $salle;
 
         return $this;
     }
@@ -116,35 +120,65 @@ class Atelier
     /**
      * @return Collection<int, Metier>
      */
-    public function getMetierId(): Collection
+    public function getMetier(): Collection
     {
-        return $this->metier_id;
+        return $this->metier;
     }
 
-    public function addMetierId(Metier $metierId): static
+    public function addMetier(Metier $metier): static
     {
-        if (!$this->metier_id->contains($metierId)) {
-            $this->metier_id->add($metierId);
+        if (!$this->metier->contains($metier)) {
+            $this->metier->add($metier);
         }
 
         return $this;
     }
 
-    public function removeMetierId(Metier $metierId): static
+    public function removeMetier(Metier $metier): static
     {
-        $this->metier_id->removeElement($metierId);
+        $this->metier->removeElement($metier);
 
         return $this;
     }
 
-    public function getEditionId(): ?Edition
+    public function getEdition(): ?Edition
     {
-        return $this->edition_id;
+        return $this->edition;
     }
 
-    public function setEditionId(?Edition $edition_id): static
+    public function setEdition(?Edition $edition): static
     {
-        $this->edition_id = $edition_id;
+        $this->edition = $edition;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Inscription>
+     */
+    public function getInscriptions(): Collection
+    {
+        return $this->inscriptions;
+    }
+
+    public function addInscription(Inscription $inscription): static
+    {
+        if (!$this->inscriptions->contains($inscription)) {
+            $this->inscriptions->add($inscription);
+            $inscription->setAtelier($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInscription(Inscription $inscription): static
+    {
+        if ($this->inscriptions->removeElement($inscription)) {
+            // set the owning side to null (unless already changed)
+            if ($inscription->getAtelier() === $this) {
+                $inscription->setAtelier(null);
+            }
+        }
 
         return $this;
     }
