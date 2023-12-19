@@ -18,7 +18,7 @@
         {% for inscription in inscriptions %}
             <tr>
                 <td>{{ inscription.id }}</td>
-                <td>{{ inscription.date ? inscription.date|date('Y-m-d') : '' }}</td>
+                <td>{{ inscription.date ? inscription.date|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ inscription.statutChiffrement ? 'Yes' : 'No' }}</td>
                 <td>
                     <a href="{{ path('app_inscription_show', {'id': inscription.id}) }}">show</a>

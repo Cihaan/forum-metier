@@ -9,7 +9,7 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Debut_datetime</th>
+                <th>Debut</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -17,7 +17,7 @@
         {% for atelier in ateliers %}
             <tr>
                 <td>{{ atelier.id }}</td>
-                <td>{{ atelier.debutDatetime ? atelier.debutDatetime|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ atelier.debut ? atelier.debut|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('app_atelier_show', {'id': atelier.id}) }}">show</a>
                     <a href="{{ path('app_atelier_edit', {'id': atelier.id}) }}">edit</a>
