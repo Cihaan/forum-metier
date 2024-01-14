@@ -18,7 +18,14 @@ services:
         exclude:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
-            - '../src/Kernel.php'
+
+    # App\MessageHandler\ConfirmationHandler:
+    #     arguments:
+    #         $mailer: '@Symfony\Component\Mailer\MailerInterface' # Add any other dependencies you need
+    #         $entityManager: '@doctrine.orm.entity_manager'      # Add this line if not already injected
+    #     tags:
+    #         - { name: 'messenger.message_handler' }
+
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

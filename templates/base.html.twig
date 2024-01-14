@@ -10,7 +10,10 @@
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
     </head>
-    <body>
+    <body style="margin-top: 60px;">
+    {% block navigation %}
+        {% include 'navigation.html' %}
+    {% endblock %}
         {% block body %}{% endblock %}
     </body>
 </html>
