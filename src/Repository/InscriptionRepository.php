@@ -16,12 +16,31 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class InscriptionRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Inscription::class);
-    }
+  public function __construct(ManagerRegistry $registry)
+  {
+    parent::__construct($registry, Inscription::class);
+  }
 
-//    /**
+  public function findByLycee($lycee)
+  {
+    return $this->createQueryBuilder('i')
+      ->andWhere('i.lycee = :lycee')
+      ->setParameter('lycee', $lycee)
+      ->getQuery()
+      ->getResult()
+    ;
+  }
+
+  public function findByAtelier($atelier)
+  {
+    return $this->createQueryBuilder('i')
+      ->andWhere('i.atelier = :atelier')
+      ->setParameter('atelier', $atelier)
+      ->getQuery()
+      ->getResult();
+  }
+
+  //    /**
 //     * @return Inscription[] Returns an array of Inscription objects
 //     */
 //    public function findByExampleField($value): array
@@ -36,7 +55,7 @@ class InscriptionRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Inscription
+  //    public function findOneBySomeField($value): ?Inscription
 //    {
 //        return $this->createQueryBuilder('i')
 //            ->andWhere('i.exampleField = :val')
