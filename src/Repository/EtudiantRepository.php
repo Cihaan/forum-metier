@@ -21,7 +21,7 @@ class EtudiantRepository extends ServiceEntityRepository
         parent::__construct($registry, Etudiant::class);
     }
 
-//    /**
+    //    /**
 //     * @return Etudiant[] Returns an array of Etudiant objects
 //     */
 //    public function findByExampleField($value): array
@@ -36,7 +36,7 @@ class EtudiantRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Etudiant
+    //    public function findOneBySomeField($value): ?Etudiant
 //    {
 //        return $this->createQueryBuilder('e')
 //            ->andWhere('e.exampleField = :val')

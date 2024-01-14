@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Etudiant;
 use App\Form\EtudiantType;
 use App\Repository\EtudiantRepository;
+use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +16,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class EtudiantController extends AbstractController
 {
     #[Route('/', name: 'app_etudiant_index', methods: ['GET'])]
-    public function index(EtudiantRepository $etudiantRepository): Response
+    public function index(EtudiantRepository $etudiantRepository, UtilisateurRepository $utilisateurRepository): Response
     {
+        $etudiants = $etudiantRepository->findAll();
+
+        $etudiants = array_map(function ($etudiant) use ($utilisateurRepository) {
+            $utilisateur = $etudiant->getUtilisateur();
+            $etudiant->setUtilisateur($utilisateur);
+            return $etudiant;
+        }, $etudiants);
+
         return $this->render('etudiant/index.html.twig', [
-            'etudiants' => $etudiantRepository->findAll(),
+            'etudiants' => $etudiants,
         ]);
     }
 
@@ -71,7 +80,7 @@ class EtudiantController extends AbstractController
     #[Route('/{id}', name: 'app_etudiant_delete', methods: ['POST'])]
     public function delete(Request $request, Etudiant $etudiant, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$etudiant->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $etudiant->getId(), $request->request->get('_token'))) {
             $entityManager->remove($etudiant);
             $entityManager->flush();
         }

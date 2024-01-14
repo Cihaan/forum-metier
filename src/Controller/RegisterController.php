@@ -25,9 +25,10 @@ class RegisterController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+
             $hashedPassword = password_hash($utilisateur->getPassword(), PASSWORD_DEFAULT);
             $utilisateur->setPassword($hashedPassword);
-            $default_role = $entityManager->getRepository(Role::class)->findBy(['nom' => 'Visiteur']);
+            $default_role = $entityManager->getRepository(Role::class)->findBy(['nom' => 'user']);
             $utilisateur->setRole($default_role[0]);
             $entityManager->persist($utilisateur);
             $entityManager->flush();

@@ -11,6 +11,34 @@
                 <th>Id</th>
                 <td>{{ etudiant.id }}</td>
             </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ etudiant.utilisateur.nom }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ etudiant.utilisateur.email }}</td>
+            </tr>
+            <tr>
+                <th>Ecole</th>
+                <td>{{ etudiant.ecole.nom }}</td>
+            </tr>
+            <tr>
+                <th>Section</th>
+                <td>{{ etudiant.section.nom }}</td>
+            </tr>
+            <tr>
+                <th>Inscriptions</th>
+                <td>
+                    <ul>
+                        {% for inscription in etudiant.inscriptions %}
+                            <li>
+                                <a href="{{ path('app_inscription_show', {'id': inscription.id}) }}">{{ inscription.id }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
         </tbody>
     </table>
 

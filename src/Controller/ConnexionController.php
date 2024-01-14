@@ -22,15 +22,13 @@ class ConnexionController extends AbstractController
         $form = $this->createForm(ConnexionType::class, $utilisateur);
         $form->handleRequest($request);
 
-        
-
         if ($form->isSubmitted()) {
             // $entityManager->persist($utilisateur);
             // $entityManager->flush();
 
             $user = $entityManager->getRepository(Utilisateur::class)->findBy(['email' => $utilisateur->getEmail()]);
 
-            if(!$user) {
+            if (!$user) {
                 echo "User not found.";
                 return $this->redirectToRoute('app_connexion_index', [], Response::HTTP_SEE_OTHER);
             }

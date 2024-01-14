@@ -21,7 +21,16 @@ class UtilisateurRepository extends ServiceEntityRepository
         parent::__construct($registry, Utilisateur::class);
     }
 
-//    /**
+    public function findUtilisateur($value)
+    {
+        return $this->createQueryBuilder("u")
+            ->andWhere("u.email = :val")
+            ->setParameter("val", $value)
+            ->getQuery()
+            ->getResult();
+    }
+
+    //    /**
 //     * @return Utilisateur[] Returns an array of Utilisateur objects
 //     */
 //    public function findByExampleField($value): array
@@ -36,7 +45,7 @@ class UtilisateurRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Utilisateur
+    //    public function findOneBySomeField($value): ?Utilisateur
 //    {
 //        return $this->createQueryBuilder('u')
 //            ->andWhere('u.exampleField = :val')
