@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Atelier;
+use App\Entity\Salle;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -21,7 +22,35 @@ class AtelierRepository extends ServiceEntityRepository
         parent::__construct($registry, Atelier::class);
     }
 
-//    /**
+    public function findSalle($id): array
+    {
+        // get the salle's name and return it
+        $salle = $this->createQueryBuilder('a')
+            ->select('s.nom')
+            ->leftJoin('a.salle', 's')
+            ->andWhere('a.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+
+        return $salle;
+    }
+
+    public function findSecteur($id): array
+    {
+        // get the salle's name and return it
+        $secteur = $this->createQueryBuilder('a')
+            ->select('s.nom')
+            ->leftJoin('a.secteur', 's')
+            ->andWhere('a.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+
+        return $secteur;
+    }
+
+    //    /**
 //     * @return Atelier[] Returns an array of Atelier objects
 //     */
 //    public function findByExampleField($value): array
@@ -36,7 +65,7 @@ class AtelierRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Atelier
+    //    public function findOneBySomeField($value): ?Atelier
 //    {
 //        return $this->createQueryBuilder('a')
 //            ->andWhere('a.exampleField = :val')

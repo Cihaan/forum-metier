@@ -15,9 +15,18 @@
                 <th>Debut</th>
                 <td>{{ atelier.debut ? atelier.debut|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
+            <tr>
+                <th>Salle</th>
+                <td>{{ salle.nom }}</td>
+            </tr>
+            <tr>
+                <th>Secteur</th>
+                <td>{{ secteur.nom }}</td>
+            </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_atelier_index') }}">back to list</a>
+
+    <a href="/">back to list</a>
 
 {% endblock %}

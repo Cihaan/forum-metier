@@ -17,8 +17,10 @@ class AtelierController extends AbstractController
     #[Route('/', name: 'app_atelier_index', methods: ['GET'])]
     public function index(AtelierRepository $atelierRepository): Response
     {
+        $ateliers = $atelierRepository->findAll();
+
         return $this->render('atelier/index.html.twig', [
-            'ateliers' => $atelierRepository->findAll(),
+            'ateliers' => $ateliers,
         ]);
     }
 
@@ -43,10 +45,15 @@ class AtelierController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_atelier_show', methods: ['GET'])]
-    public function show(Atelier $atelier): Response
+    public function show(Atelier $atelier, AtelierRepository $atelierRepository): Response
     {
+        $salle = $atelierRepository->findSalle($atelier->getSalle())[0];
+        $secteur = $atelierRepository->findSecteur($atelier->getSecteur())[0];
+
         return $this->render('atelier/show.html.twig', [
             'atelier' => $atelier,
+            'salle' => $salle,
+            'secteur' => $secteur,
         ]);
     }
 
@@ -71,7 +78,7 @@ class AtelierController extends AbstractController
     #[Route('/{id}', name: 'app_atelier_delete', methods: ['POST'])]
     public function delete(Request $request, Atelier $atelier, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$atelier->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $atelier->getId(), $request->request->get('_token'))) {
             $entityManager->remove($atelier);
             $entityManager->flush();
         }
